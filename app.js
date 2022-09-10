@@ -22,16 +22,15 @@ opts.agent = agent;
 async function fetchPages() {
     let html = '', domHtml = null;
     http.get(opts, (res) => {
-        console.log('"response" event!', res.headers);
+        // console.log('"response" event!', res.headers);
         res.on('data', function (chunk) {
             html += ("" + chunk)
             console.log('' + chunk);
+            fs.writeFile('myFile',html, e => console.log(e));
         });
         let parser = new DOMParser();
         domHtml = parser.parseFromString(html, 'text/html');
     });
-    console.log(domHtml);
-    // fs.writeFile('myFile',domHtml, e => console.log(e));
 }
 function main() {
     fetchPages();
