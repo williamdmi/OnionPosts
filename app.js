@@ -2,6 +2,9 @@ const url = require('url');
 const http = require('http');
 const fs = require('fs');
 const HttpProxyAgent = require('http-proxy-agent');
+const { log } = require('console');
+const DOMParser = require('xmldom').DOMParser;
+
 
 // HTTP/HTTPS proxy to connect to
 let proxy = process.env.http_proxy || 'http://localhost:8118';
@@ -15,13 +18,11 @@ let opts = url.parse(endpoint);
 // create an instance of the `HttpProxyAgent` class with the proxy server information
 let agent = new HttpProxyAgent(proxy);
 opts.agent = agent;
-;
-
 
 async function fetchPages() {
     let html = '', domHtml = null;
     http.get(opts, (res) => {
-        //   console.log('"response" event!', res.headers);
+        console.log('"response" event!', res.headers);
         res.on('data', function (chunk) {
             html += ("" + chunk)
             console.log('' + chunk);
@@ -30,8 +31,9 @@ async function fetchPages() {
         domHtml = parser.parseFromString(html, 'text/html');
     });
     console.log(domHtml);
+    // fs.writeFile('myFile',domHtml, e => console.log(e));
 }
 function main() {
-    await fetchPages();
+    fetchPages();
 }
 main();
