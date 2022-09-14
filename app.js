@@ -42,20 +42,28 @@ const fetchPages = (position) => {
 
 
 async function main() {
-    let htmlString = await fetchPages(0);
-    fs.writeFile('myFile', htmlString, e => console.log(e))
-    let dom = new JSDOM(htmlString);
-    let trArray = Array.from(dom.window.document.querySelectorAll('tr'));
-    let posts = trArray.map(element => {
-        const children = element.children;
-        const postObject = {
-            title : children[0].textContent,
-            name : children[1].textContent,
-            when : children[3].textContent
-        };
-        return postObject;
-    });
-    console.log(posts);
+    let position = 0;
+    let posts = [];
+    while (true) {
+        let htmlString = await fetchPages(position);
+        let dom = new JSDOM(htmlString);
+        let trArray = Array.from(dom.window.document.querySelectorAll('tr'));
+        if (trArray.length > 0) {
+            let pagePosts = trArray.map(element => {
+                const children = element.children;
+                const postObject = {
+                    title: children[0].textContent || null,
+                    name: children[1].textContent || null,
+                    when: children[3].textContent || null
+                };
+                return postObject;
+            });
+            posts = posts.concat(pagePosts);
+            position += 50;
+        }
+        else break;
+    }
+    console.log(posts.length);
 }
 
 main();
