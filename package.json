@@ -20,6 +20,7 @@
   "dependencies": {
     "fs": "^0.0.1-security",
     "http-proxy-agent": "^5.0.0",
+    "jsdom": "^20.0.0",
     "xmldom": "^0.6.0"
   }
 }
