@@ -68,7 +68,7 @@ async function main() {
         }
         else break;
     }
-    console.log(posts.length);
+    fs.writeFile("myFile.json" , JSON.stringify(posts) , e => console.log(e));
 }
 
 main();
