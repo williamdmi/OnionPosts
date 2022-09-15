@@ -52,7 +52,8 @@ async function main() {
         let dom = new JSDOM(htmlString);
         let trArray = Array.from(dom.window.document.querySelectorAll('tr'));
         //If there are no posts go the the else statement and break
-        if (trArray.length > 0) {
+        if (trArray.length > 1) {
+            trArray.shift();
             let pagePosts = trArray.map(element => {
                 const children = element.children;
                 const postObject = {
